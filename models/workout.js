@@ -10,30 +10,36 @@ const WorkoutSchema = new Schema({
     {
       type: {
         type: String,
-        trim: true,
       },
       name: {
         type: String,
         trim: true,
       },
       duration: {
-        Number,
-        default: 0,
+        type: Number,
+        trim: true,
       },
       weight: {
         type: Number,
-        default: 0,
+        trim: true,
       },
       reps: {
         type: Number,
-        default: 0,
+        trim: true,
       },
       sets: {
         type: Number,
-        default: 0,
+        trim: true,
       },
+      distance: {
+        type: Number,
+      }
     },
   ],
+  totalDuration: {
+    type: Number,
+    default: 0
+}
 });
 
 const Workout = mongoose.model("Workout", WorkoutSchema);
