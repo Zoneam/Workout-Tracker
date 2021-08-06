@@ -31,7 +31,6 @@ app.get("/exercise", (req, res) => {
 app.get("/stats", (req, res) => {
   res.sendFile(path.join(__dirname, "/public/stats.html"));
 });
-// -------------------------------------------------------
 
 app.get('/api/workouts', async (req, res) => {
   try{
@@ -49,24 +48,24 @@ app.get('/api/workouts', async (req, res) => {
   }
 });
 
-app.post('/api/workouts', async (req, res) => {
+app.post('/api/workouts', async ({ body }, res) => {
   try {
-      const workout = await db.Workout.create(req.body);
+      const workout = await db.Workout.create(body);
       res.json(workout);
   } catch (error) {
       res.json(error)
   }
 });
 
-app.put('/api/workouts/:id', async (req, res) => {
+app.put('/api/workouts/:id', async ({ body, params }, res) => {
   try {
-    console.log("req",req.body)
+    console.log("req",body)
       const workoutData = await db.Workout.updateOne({
-          _id: req.params.id,
+          _id: params.id,
       },
       {
-          $inc: { totalDuration: req.body.duration },
-          $push: { exercises: req.body }
+          $inc: { totalDuration: body.duration },
+          $push: { exercises: body }
       },
       { new: true });
       res.json(workoutData);
@@ -84,7 +83,7 @@ app.get('/api/workouts/range', async (req, res) => {
           totalDuration: { $sum: '$exercises.duration' }
         }
       }
-    ]).sort({day: -1}).limit(7);
+    ]).sort({day: -1}).limit(7).sort({day: 1});
      console.log(workouts);
      res.json(workouts) 
   } catch (error) {
@@ -92,8 +91,6 @@ app.get('/api/workouts/range', async (req, res) => {
   }
 });
 
-
-// -------------------------------------------------------
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);
 });
