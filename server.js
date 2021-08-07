@@ -1,5 +1,4 @@
 const express = require("express");
-const logger = require("morgan");
 const mongoose = require("mongoose");
 const path = require("path");
 
@@ -8,8 +7,6 @@ const PORT = process.env.PORT || 3001;
 const db = require("./models");
 
 const app = express();
-
-app.use(logger("dev"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -62,7 +59,6 @@ app.post('/api/workouts', async ({ body }, res) => {
 
 app.put('/api/workouts/:id', async ({ body, params }, res) => {
   try {
-    console.log("req",body)
       const workoutData = await db.Workout.updateOne({
           _id: params.id,
       },
@@ -87,7 +83,6 @@ app.get('/api/workouts/range', async (req, res) => {
         }
       }
     ]).sort({day: -1}).limit(7).sort({day: 1});
-     console.log(workouts);
      res.json(workouts) 
   } catch (error) {
       res.json(error)
