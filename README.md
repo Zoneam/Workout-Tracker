@@ -24,7 +24,7 @@ _To install this application, make sure you clone the repo to your device. Insta
 
 ## Usage
 
-```md
+```
 Click on Create New Workout or Continue Workout. You will be redirected to a screen to enter in your cardio or resistance workout information. Once complete, select either add or complete workout. To view your stats, go to the Dashboard and you wiill be presented with last 7 day workout data graphs.
 ```
 
