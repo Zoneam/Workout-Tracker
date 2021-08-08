@@ -12,7 +12,7 @@ const distanceInput = document.querySelector("#distance");
 const completeButton = document.querySelector("button.complete");
 const addButton = document.querySelector("button.add-another");
 const toast = document.querySelector("#toast");
-const newWorkout = document.querySelector(".new-workout")
+const newWorkout = document.querySelector(".new-workout");
 
 let workoutType = null;
 let shouldNavigateAway = false;
@@ -21,12 +21,11 @@ async function initExercise() {
   let workout;
 
   if (location.search.split("=")[1] === undefined) {
-    workout = await API.createWorkout()
+    workout = await API.createWorkout();
   }
   if (workout) {
     location.search = "?id=" + workout._id;
   }
-
 }
 
 initExercise();
@@ -96,7 +95,7 @@ function validateInputs() {
 
 async function handleFormSubmit(event) {
   event.preventDefault();
-
+  addButton.setAttribute("disabled", true);
   let workoutData = {};
 
   if (workoutType === "cardio") {
@@ -112,10 +111,12 @@ async function handleFormSubmit(event) {
     workoutData.reps = Number(repsInput.value.trim());
     workoutData.duration = Number(resistanceDurationInput.value.trim());
   }
+  if (workoutData.name !== "") {
+    await API.addExercise(workoutData);
+    toast.classList.add("success");
+  } else location.href = "/";
 
-  await API.addExercise(workoutData);
   clearInputs();
-  toast.classList.add("success");
 }
 
 function handleToastAnimationEnd() {
@@ -152,4 +153,4 @@ toast.addEventListener("animationend", handleToastAnimationEnd);
 
 document
   .querySelectorAll("input")
-  .forEach(element => element.addEventListener("input", validateInputs));
+  .forEach((element) => element.addEventListener("input", validateInputs));
